@@ -7,7 +7,7 @@ begin
    dbms_output.put_line('Start schema cleanup');
    for i in (select 'TRACKING' table_name from dual union all
              select 'ORDERS' table_name from dual union all
-             select 'CARD_DETAIILS' table_name from dual union all
+             select 'CARD_DETAILS' table_name from dual union all
              select 'CUSTOMERS' table_name from dual union all
              select 'EMPLOYEES' table_name from dual union all
              select 'STORE_LOCATION' table_name from dual union all
@@ -78,6 +78,18 @@ CREATE TABLE Car_Health (
 );
 
 --STORE LOCATION
+CREATE TABLE store_location ( 
+  store_id number(10) constraint store_id primary key, 
+  address_line_1 varchar2(255) NOT NULL, 
+  address_line_2 varchar2(255) , 
+  city varchar2(20) NOT NULL, 
+  state varchar2(20) NOT NULL, 
+  country varchar2(20) NOT NULL, 
+  zip_code number(6) NOT NULL, 
+  store_name varchar2(20) NOT NULL Unique, 
+  store_longitude varchar2(20) NOT NULL,
+  store_latitude varchar2(20) NOT NULL
+); 
 
 --EMPLOYEES
 CREATE TABLE Employees ( 
@@ -104,10 +116,35 @@ CREATE TABLE Employees (
 ); 
 
 --CUSTOMERS
-
+CREATE TABLE customers (
+  customer_id number(10) constraint customer_id primary key, 
+  first_name varchar2(255) NOT NULL, 
+  last_name varchar2(255) NOT NULL, 
+  email_id varchar2(255) NOT NULL Unique, 
+  phone_no number(13) NOT NULL Unique, 
+  user_status varchar2(10) default on NULL 'active', 
+  date_of_birth date, 
+  gender varchar2(255), 
+  address_line_1 varchar2(255) NOT NULL, 
+  address_line_2 varchar2(255), 
+  city varchar2(255) NOT NULL, 
+  state varchar2(255) NOT NULL, 
+  country varchar2(255) NOT NULL, 
+  zip_code number(6) NOT NULL,
+  constraint user_status_chk CHECK (user_status in ('active','inactive')),
+  CONSTRAINT c_email_id_chk CHECK (email_id like ('%@%.%')),
+  CONSTRAINT c_phone_no_chk CHECK (phone_no BETWEEN 1111111111 AND 9999999999) ENABLE
+); 
 
 --CARD_DETAILS
-
+CREATE TABLE card_details (   
+  card_id number(10) primary key,   
+  customer_id number(10) NOT NULL,   
+  card_no varchar2(16) NOT NULL Unique ,  
+  card_name varchar2(20) NOT NULL, 
+  CONSTRAINT customer_id_fk FOREIGN KEY (customer_id) REFERENCES customers(customer_id),  
+  CONSTRAINT check_card_number CHECK ((card_no BETWEEN 1111111111111111 AND 9999999999999999)) 
+);   
 
 --ORDERS
 CREATE TABLE Orders ( 
@@ -122,7 +159,7 @@ CREATE TABLE Orders (
   order_status varchar2(10) NOT NULL, 
   bill_amount number(9,2) NOT NULL, 
   payment_status varchar2(10),
-  Constraint order_status check(order_status in ('confirmed','in_progress','completed')),
+  Constraint order_status check(order_status in ('confirmed','in_progress','completed','cancelled')),
   Constraint payment_status check (payment_status in ('completed','failed','NA')),
   constraint car_interval check (pickup_date_time<drop_date_time)
   ,CONSTRAINT cust_id_fk FOREIGN KEY(customer_id) REFERENCES customers(customer_id)
