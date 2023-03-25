@@ -37,13 +37,71 @@ exception
 end;
 /
 
---CREATE VEHICLES
+--VEHICLES
+CREATE TABLE Vehicles ( 
+  vehicle_id number(10) CONSTRAINT vehicle_id PRIMARY KEY, 
+  vehicle_type varchar2(255) NOT NULL, 
+  vehicle_manufacturer varchar2(255) NOT NULL, 
+  vehicle_model varchar2(255) NOT NULL, 
+  chasis_no varchar2(255) NOT NULL Unique, 
+  engine_no varchar2(255) NOT NULL Unique, 
+  vehicle_location varchar2(255) NOT NULL, 
+  vehicle_owner varchar2(255) NOT NULL, 
+  base_cost number(9,2) NOT NULL, 
+  purchase_date date NOT NULL, 
+  vehicle_status varchar2(255) Default ON NULL 'Available', 
+  vehicle_no varchar2(255) NOT NULL Unique, 
+  store_id number(10) NOT NULL,
+     constraint vehicle_status_flag_chk CHECK (vehicle_status in ('Available','Unavailable'))
+); 
 
 --CAR_HEALTH
+CREATE TABLE Car_Health ( 
+  car_health_id number(10) CONSTRAINT car_health_id PRIMARY KEY, 
+  vehicle_id number(10) NOT NULL Unique, 
+  last_service_date date , 
+  next_service_date date NOT NULL, 
+  health_status varchar2(255) Default ON NULL 'OKAY', 
+  renewal_date date NOT NULL, 
+  insurance_type varchar2(255) Default ON NULL 'GENERAL', 
+  insurance_no number(15) NOT NULL Unique, 
+  check_engine_oil number(1) Default ON NULL 0 , 
+  check_tier_pressure number(1) Default ON NULL 0 , 
+  check_air_filter number(1) Default ON NULL 0 , 
+  employee_id number(10) NOT NULL, 
+  last_update_date_time timestamp NOT NULL,
+    CONSTRAINT check_engine_oil_flag_chk CHECK (check_engine_oil in (0, 1)),
+    CONSTRAINT check_tier_pressure_flag_chk CHECK (check_tier_pressure in (0, 1)),
+    CONSTRAINT check_air_filter_flag_chk CHECK (check_air_filter in (0, 1)),
+    CONSTRAINT health_status_flag_chk CHECK (health_status in ('OKAY','NOT OKAY')),
+    CONSTRAINT health_id_chk FOREIGN KEY(car_health_id) REFERENCES Vehicles(vehicle_id)
+);
 
 --STORE LOCATION
 
 --EMPLOYEES
+CREATE TABLE Employees ( 
+  employee_id number(10) CONSTRAINT employee_id PRIMARY KEY , 
+  first_name varchar2(255) NOT NULL , 
+  last_name varchar2(255) NOT NULL, 
+  ssn_no varchar2(255) NOT NULL Unique, 
+  designation varchar2(255) NOT NULL, 
+  phone_no number(13) NOT NULL Unique, 
+  email_id varchar2(255) NOT NULL Unique, 
+  store_id number(10) NOT NULL, 
+  address_line_1 varchar2(255) NOT NULL, 
+  address_line_2 varchar2(255) , 
+  city varchar2(255) NOT NULL, 
+  state varchar2(255) NOT NULL, 
+  country varchar2(255) NOT NULL, 
+  zip_code number(6) NOT NULL, 
+  manager_id number(10) NOT NULL, 
+  salary number(9,2) , 
+  date_of_joining date, 
+    CONSTRAINT manager_id_chk FOREIGN KEY(employee_id) REFERENCES Employees(employee_id),
+    CONSTRAINT email_id_chk CHECK (email_id like('%@%.%')),
+    CONSTRAINT phone_no CHECK (phone_no BETWEEN 1111111111 AND 9999999999) ENABLE
+); 
 
 --CUSTOMERS
 
@@ -57,8 +115,8 @@ CREATE TABLE Orders (
   customer_id number(10) NOT NULL, 
   pickup_date_time timestamp NOT NULL, 
   drop_date_time timestamp NOT NULL, 
-  pickup_location_name varchar2(50) NOT NULL, 
-  drop_location_name varchar2(50) NOT NULL, 
+  pickup_location varchar2(255) NOT NULL, 
+  drop_location varchar2(255) NOT NULL, 
   vehicle_id number(10) NOT NULL, 
   card_id number(10) NOT NULL, 
   order_status varchar2(10) NOT NULL, 
@@ -73,11 +131,10 @@ CREATE TABLE Orders (
 ); 
 
 --TRACKING
-
 CREATE TABLE Tracking ( 
   tracking_id number(10) PRIMARY KEY, 
-  current_location varchar2(50) NOT NULL, 
-  tracking_status varchar2(10) NOT NULL, 
+  current_location varchar2(255) NOT NULL, 
+  tracking_status varchar2(255) NOT NULL, 
   order_id number(10) NOT NULL, 
   tracking_end_date_time timestamp NOT NULL, 
   last_update_date_time timestamp NOT NULL,
