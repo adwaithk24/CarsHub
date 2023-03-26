@@ -2120,3 +2120,6 @@ insert into tracking (tracking_id, current_location, order_id, tracking_end_date
 insert into tracking (tracking_id, current_location, order_id, tracking_end_date_time, last_update_date_time, tracking_status) values (98, '33.7343,73.8343', 42, '08-Mar-2023', '07-Dec-2022', 'completed');
 insert into tracking (tracking_id, current_location, order_id, tracking_end_date_time, last_update_date_time, tracking_status) values (99, '33.5323,73.0353', 39, '06-Aug-2021', '29-Mar-2022', 'completed');
 insert into tracking (tracking_id, current_location, order_id, tracking_end_date_time, last_update_date_time, tracking_status) values (100, '43.2383,83.1333', 67, '13-Mar-2023', '25-Jul-2022', 'in_progress');
+
+
+commit;
