@@ -156,9 +156,9 @@ CREATE TABLE Orders (
   drop_location varchar2(255) NOT NULL, 
   vehicle_id number(10) NOT NULL, 
   card_id number(10) NOT NULL, 
-  order_status varchar2(10) NOT NULL, 
+  order_status varchar2(255) NOT NULL, 
   bill_amount number(9,2) NOT NULL, 
-  payment_status varchar2(10),
+  payment_status varchar2(255),
   Constraint order_status check(order_status in ('confirmed','in_progress','completed','cancelled')),
   Constraint payment_status check (payment_status in ('completed','failed','NA')),
   constraint car_interval check (pickup_date_time<drop_date_time)
@@ -178,5 +178,11 @@ CREATE TABLE Tracking (
   Constraint tracking_status check(tracking_status in ('in_progress','completed')),
   CONSTRAINT order_id_fk FOREIGN KEY(order_id) REFERENCES orders(order_id)
 );
+
+
+--Insert_Data
+
+
+
 
 
