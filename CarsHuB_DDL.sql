@@ -130,10 +130,10 @@ CREATE TABLE CUSTOMERS (
   last_name varchar2(255) NOT NULL, 
   email_id varchar2(255) NOT NULL Unique, 
   phone_no number(13) NOT NULL Unique, 
+  license_no varchar2(20) NOT NULL Unique,
   user_status varchar2(10) default on NULL 'active', 
   date_of_birth date, 
   gender varchar2(255), 
-  license_no varchar2(20) NOT NULL Unique,
   address_line_1 varchar2(255) NOT NULL, 
   address_line_2 varchar2(255), 
   city varchar2(255) NOT NULL, 
@@ -143,7 +143,6 @@ CREATE TABLE CUSTOMERS (
   CONSTRAINT c_user_status CHECK (user_status in ('active','inactive')) ENABLE,
   CONSTRAINT c_email_id CHECK (email_id like ('%@%.%')) ENABLE,
   CONSTRAINT c_phone_no CHECK (phone_no BETWEEN 1111111111 AND 9999999999) ENABLE,
-  CONSTRAINT c_license_no CHECK (length(license_no)=10) ENABLE,
   CONSTRAINT c_date_of_birth CHECK (date_of_birth not between to_date('01-01-2002','dd-mm-yyyy') and to_date('31-12-2023','dd-mm-yyyy')) ENABLE
 ); 
 
