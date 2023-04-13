@@ -68,7 +68,7 @@ CREATE TABLE CAR_HEALTH (
   next_service_date date NOT NULL, 
   health_status varchar2(255) Default ON NULL 'OKAY', 
   renewal_date date NOT NULL, 
-  insurance_type varchar2(255) Default ON NULL 'GENERAL', 
+  insurance_type varchar2(255) Default ON NULL 'General', 
   insurance_no number(15) NOT NULL Unique, 
   check_engine_oil number(1) Default ON NULL 0 , 
   check_tier_pressure number(1) Default ON NULL 0 , 
@@ -81,7 +81,7 @@ CREATE TABLE CAR_HEALTH (
     CONSTRAINT c_health_status CHECK (health_status in ('OKAY','NOT_OKAY')) ENABLE,
 	CONSTRAINT c_insurance_type CHECK (insurance_type in ('FullCoverage','Collision','General','InjuryProtection','Comprehensive')) ENABLE,
 	CONSTRAINT c_service_date CHECK (next_service_date>last_service_date),
-    CONSTRAINT c_health_id_fk FOREIGN KEY(car_health_id) REFERENCES VEHICLES(vehicle_id)
+    CONSTRAINT c_health_id_fk FOREIGN KEY(vehicle_id) REFERENCES VEHICLES(vehicle_id)
 );
 
 --STORE LOCATION
