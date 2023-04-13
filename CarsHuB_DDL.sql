@@ -78,7 +78,7 @@ CREATE TABLE CAR_HEALTH (
     CONSTRAINT c_engine_oil_flag CHECK (check_engine_oil in (0, 1)) ENABLE,
     CONSTRAINT c_check_tier_pressure_flag CHECK (check_tier_pressure in (0, 1)) ENABLE,
     CONSTRAINT c_check_air_filter_flag CHECK (check_air_filter in (0, 1)) ENABLE,
-    CONSTRAINT c_health_status CHECK (health_status in ('okay','not okay')) ENABLE,
+    CONSTRAINT c_health_status CHECK (health_status in ('OKAY','NOT_OKAY')) ENABLE,
 	CONSTRAINT c_insurance_type CHECK (insurance_type in ('FullCoverage','Collision','General','InjuryProtection','Comprehensive')) ENABLE,
 	CONSTRAINT c_service_date CHECK (next_service_date>last_service_date),
     CONSTRAINT c_health_id_fk FOREIGN KEY(car_health_id) REFERENCES VEHICLES(vehicle_id)
@@ -141,9 +141,8 @@ CREATE TABLE CUSTOMERS (
   country varchar2(255) NOT NULL, 
   zip_code number(6) NOT NULL,
   CONSTRAINT c_user_status CHECK (user_status in ('active','inactive')) ENABLE,
-  CONSTRAINT c_email_id CHECK (email_id like ('%@%.%')) ENABLE,
-  CONSTRAINT c_phone_no CHECK (phone_no BETWEEN 1111111111 AND 9999999999) ENABLE,
-  CONSTRAINT c_date_of_birth CHECK (date_of_birth not between to_date('01-01-2002','dd-mm-yyyy') and to_date('31-12-2023','dd-mm-yyyy')) ENABLE
+  CONSTRAINT c_email_id_cust CHECK (email_id like ('%@%.%')) ENABLE,
+  CONSTRAINT c_phone_no_cust CHECK (phone_no BETWEEN 1111111111 AND 9999999999) ENABLE
 ); 
 
 --CARD_DETAILS
