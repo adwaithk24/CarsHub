@@ -149,9 +149,9 @@ CREATE TABLE CUSTOMERS (
 CREATE TABLE CARD_DETAILS (   
   card_id number(10) PRIMARY KEY,   
   customer_id number(10) NOT NULL,   
-  card_no varchar2(16) NOT NULL Unique,  
+  card_no number(16) NOT NULL Unique,  
   card_name varchar2(20) NOT NULL , 
-  CONSTRAINT c_card_no CHECK ((card_no BETWEEN 1111111111111111 AND 9999999999999999)) , CHECK (REGEXP_LIKE(card_no, '^[[:alnum:][:space:]\-\'']+$')) ENABLE,
+  CONSTRAINT c_card_no CHECK ((card_no BETWEEN 1111111111111111 AND 9999999999999999)) ENABLE,
   CONSTRAINT c_customer_id_fk FOREIGN KEY (customer_id) REFERENCES CUSTOMERS(customer_id)  
 ); 
 
